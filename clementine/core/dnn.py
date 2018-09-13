@@ -19,7 +19,7 @@ class DNN():
         self.size_layers = size_layers
 
 
-    def __initialize_parameters(self, size_layers, seed = 123):
+    def __initialize_parameters(self, size_layers, init_weights = 'random', seed = 123):
         '''
 
 
@@ -35,7 +35,13 @@ class DNN():
         parameters = {}
 
         for layer in range(1, num_layers):
-            parameters['weights' + str(layer)] = np.random.randn(size_layers[layer], size_layers[layer - 1]) * 0.01
+            if init_weights == 'random':
+                parameters['weights' + str(layer)] = np.random.randn(size_layers[layer], size_layers[layer - 1]) * 0.01
+            elif init_weights == 'heetal':
+                parameters['weights' + str(layer)] = np.random.randn(size_layers[layer], size_layers[layer - 1]) * np.sqrt (2 / size_layers[layer - 1])
+            elif init_weights == 'xavier':
+                parameters['weights' + str(layer)] = np.random.randn(size_layers[layer], size_layers[layer - 1]) * np.sqrt (1 / size_layers[layer - 1])
+
             parameters['biases' + str(layer)] = np.zeros((size_layers[layer], 1))
 
         return parameters
